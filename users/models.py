@@ -23,7 +23,7 @@ class Payment(models.Model):
     payment_date = models.DateField(verbose_name='дата оплаты')
     course_paid = models.ForeignKey(Course,verbose_name='оплаченный курс',on_delete=models.CASCADE)
     subject_paid = models.ForeignKey(Subject,verbose_name='оплаченный урок',on_delete=models.CASCADE)
-    payment_amount = models.IntegerField(verbose_name='сумма оплаты')
+    payment_amount = models.PositiveIntegerField(verbose_name='сумма оплаты')
     payment_method = models.CharField(max_length=50,default=transfer,choices=payment_methods)
 
     def __str__(self):

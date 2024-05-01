@@ -11,7 +11,7 @@ class CourseSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer(source='subject_set',many=True)
 
     def get_subject_count(self,obj):
-        return obj.subject_set.all().count()
+        return obj.subject_set.count()
     class Meta:
         model = Course
         fields = '__all__'
