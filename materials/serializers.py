@@ -3,7 +3,7 @@ from materials.models import Course,Subject,Subscription
 from materials.validators import LinkValidator
 
 class SubjectSerializer(serializers.ModelSerializer):
-    validators = [LinkValidator(field='link')]
+    # validators = [LinkValidator(field='link')]
     class Meta:
         model = Subject
         fields = '__all__'
@@ -17,10 +17,12 @@ class CourseSerializer(serializers.ModelSerializer):
         return obj.subject_set.count()
 
     def get_subscription(self,obj):
-        if Subscription.objects.filter(course=obj.id, user= self.request.user):
-            return Subscription.objects.filter(course=obj.id, user=self.request.user)
-        else:
-            return "Нету информации о подписке"
+        request = self.context.get('request')
+        user = None
+        if request:
+            user = request.user
+        return obj.subscription_set.filter(user=user).exists()
+
     class Meta:
         model = Course
         fields = ('name','description','preview','owner','subscription','subject','subject_count',)
