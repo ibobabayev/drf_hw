@@ -62,7 +62,8 @@ class CourseTestCase(APITestCase):
         )
         self.assertEqual(
             response.json(),
-            [{'name': 'Sport', 'description': 'Sport', 'preview': None, 'owner': None, 'subscription': False, 'subject': [{'id': 1, 'name': 'Football', 'description': 'Football', 'preview': None, 'link': None, 'course': 1, 'owner': 1}], 'subject_count': 1}]
+            [{'name': 'Sport', 'description': 'Sport', 'preview': None, 'owner': None, 'subscription': False,
+              'subject': [{'id': 1, 'name': 'Football', 'description': 'Football', 'preview': None, 'link': None, 'course': 1, 'owner': 1}], 'subject_count': 1}]
         )
     def test_detail_course(self):
         """Тестирование на просмотр одного курса"""
@@ -181,8 +182,8 @@ class SubjectTestCase(APITestCase):
         self.assertEqual(
             response.json(),
             {"count":1,"next":None,"previous":None,"results":[
-                {'id': 1, 'name': 'Football', 'description': 'Football', 'preview': None,
-                 'link': None, 'course': 1, 'owner': 1}
+                {'id': 10, 'name': 'Football', 'description': 'Football', 'preview': None,
+                 'link': None, 'course': 10, 'owner': 9}
             ]}
         )
 
