@@ -11,7 +11,7 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     subject_count = serializers.SerializerMethodField()
-    subject = SubjectSerializer(source='subject_set',many=True)
+    subject = SubjectSerializer(source='subject_set',many=True,read_only=True)
     subscription = serializers.SerializerMethodField()
     def get_subject_count(self,obj):
         return obj.subject_set.count()
