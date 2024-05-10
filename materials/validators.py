@@ -10,4 +10,5 @@ class LinkValidator:
         if link:
             if youtube not in link:
                 raise ValidationError('You should use youtube link')
-
+        else:
+            return None

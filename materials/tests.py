@@ -146,14 +146,15 @@ class SubjectTestCase(APITestCase):
             "name": self.subject.name,
             "description": self.subject.description,
             "course":self.course.id,
+            "link": 'https://youtube.com/'
 
         }
         response = self.client.post(
             '/materials/subject/create',
             data=data
         )
-
         print(response.json())
+
         self.assertTrue(
             Subject.objects.all().exists()
         )
@@ -164,7 +165,7 @@ class SubjectTestCase(APITestCase):
         )
 
     def test_list_subject(self):
-        """Тестирование на вывода списка предметов"""
+        """Тестирование на вывод списка предметов"""
 
         response = self.client.get(
             '/materials/subject/',
