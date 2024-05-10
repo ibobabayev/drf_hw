@@ -3,7 +3,7 @@ from materials.models import Course,Subject,Subscription
 from materials.validators import LinkValidator
 
 class SubjectSerializer(serializers.ModelSerializer):
-    # validators = [LinkValidator(field='link')]
+    validators = [LinkValidator(field='link')]
     class Meta:
         model = Subject
         fields = '__all__'

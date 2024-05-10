@@ -20,7 +20,7 @@ class UserRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
-    #Другой пользователь не может детально посмотреть,сделать дополнительный метод
+
 
 
 class UserUpdateAPIView(generics.UpdateAPIView):

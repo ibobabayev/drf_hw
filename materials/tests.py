@@ -1,13 +1,10 @@
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient, APIRequestFactory
 from materials.models import Course,Subject
-from materials.views import CourseViewSet
 from users.models import User
-import json
 
 
 class CourseTestCase(APITestCase):
-
     def setUp(self):
         self.user = User.objects.create(
             email="test@mail.com",
@@ -32,12 +29,11 @@ class CourseTestCase(APITestCase):
         data = {
             "name":self.course.name,
             "description":self.course.description,
+
         }
 
         response = self.client.post(
             '/materials/course/',data=data)
-
-        print(response.json())
 
         self.assertEqual(
             response.status_code,
@@ -48,10 +44,9 @@ class CourseTestCase(APITestCase):
             Course.objects.all().exists()
         )
 
+    # Работает только без пагинации
     def test_list_course(self):
         """Тестирование на вывод списка курсов"""
-        #Работает только без пагинации
-
         response = self.client.get(
             '/materials/course/',
         )
@@ -62,26 +57,28 @@ class CourseTestCase(APITestCase):
         )
         self.assertEqual(
             response.json(),
-            [{'name': 'Sport', 'description': 'Sport', 'preview': None, 'owner': None, 'subscription': False,
-              'subject': [{'id': 1, 'name': 'Football', 'description': 'Football', 'preview': None, 'link': None, 'course': 1, 'owner': 1}], 'subject_count': 1}]
+            {'count': 1, 'next': None, 'previous': None, 'results': [
+                {'name': 'Sport', 'description': 'Sport', 'preview': None, 'owner': None, 'subscription': False,
+                 'subject': [
+                     {'id': 4, 'name': 'Football', 'description': 'Football', 'preview': None, 'link': None, 'course': 5, 'owner': 4}
+                 ],
+                 'subject_count': 1}
+            ]}
+
         )
     def test_detail_course(self):
         """Тестирование на просмотр одного курса"""
-
         data = {
             "name": self.course.name,
-            "description": self.course.description,
-        }
-        response = self.client.get(f'/materials/course/{self.course.id}/',data=data)
-
-
+            "description": self.course.description,}
+        response = self.client.get(
+            f'/materials/course/{self.course.id}/',data=data)
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK
         )
     def test_update_course(self):
         """Тестирование на обновлении курса"""
-
         data = {
             'name': 'update test',
             'description': 'update test',
@@ -149,7 +146,6 @@ class SubjectTestCase(APITestCase):
             "name": self.subject.name,
             "description": self.subject.description,
             "course":self.course.id,
-            "link":'https://youtube.com/'
 
         }
         response = self.client.post(
@@ -182,8 +178,8 @@ class SubjectTestCase(APITestCase):
         self.assertEqual(
             response.json(),
             {"count":1,"next":None,"previous":None,"results":[
-                {'id': 10, 'name': 'Football', 'description': 'Football', 'preview': None,
-                 'link': None, 'course': 10, 'owner': 9}
+                {'id': self.subject.id, 'name': 'Football', 'description': 'Football', 'preview': None,
+                 'link': None, 'course': self.course.id, 'owner': self.user.id}
             ]}
         )
 
@@ -207,7 +203,7 @@ class SubjectTestCase(APITestCase):
             'name': 'Basketball',
             'description': 'Basketball',
             'course':self.course.id,
-            'owner':self.user.id
+            'owner':self.user.id,
         }
         response = self.client.patch(
             f'/materials/subject/edit/{self.subject.id}',
