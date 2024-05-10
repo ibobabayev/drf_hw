@@ -146,14 +146,14 @@ class SubjectTestCase(APITestCase):
             "name": self.subject.name,
             "description": self.subject.description,
             "course":self.course.id,
-            "link": 'https://youtube.com/'
+            "link": "https://youtube.com/",
 
         }
         response = self.client.post(
             '/materials/subject/create',
             data=data
         )
-        print(response.json())
+
 
         self.assertTrue(
             Subject.objects.all().exists()
@@ -170,7 +170,7 @@ class SubjectTestCase(APITestCase):
         response = self.client.get(
             '/materials/subject/',
         )
-        print(response.content)
+
 
         self.assertEqual(
             response.status_code,
@@ -211,7 +211,7 @@ class SubjectTestCase(APITestCase):
             data
         )
 
-        print(response.content)
+
 
         self.assertEqual(
             response.status_code,
@@ -240,7 +240,7 @@ class SubjectTestCase(APITestCase):
             f'/materials/subject/delete/{self.subject.id}',
             data
         )
-        print(response.content)
+
 
         self.assertEqual(
             response.status_code,
