@@ -24,7 +24,6 @@ def create_price(price,product):
     stripe_price = stripe.Price.create(
         currency="rub",
         unit_amount=int(price) * 100,
-        recurring={"interval": "month"},
         product_data={"name": product.get("id")},
     )
     return stripe_price

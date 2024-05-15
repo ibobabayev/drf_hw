@@ -55,9 +55,5 @@ class PaymentCreateAPIView(generics.CreateAPIView):
         payment.price = create_price(price=payment.payment_amount,product=payment.product)
         payment.session_id,payment.link,payment.status = create_session(session=payment.price)
         payment.save()
-        # print(payment.product)
-        # print(payment.price)
-        # print(payment.session_id)
-        # print(payment.link)
-        # print(payment.status)
+
 
