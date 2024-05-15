@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'materials',
-    'django_filters'
+    'django_filters',
+    'drf_yasg',
 ]
 
 REST_FRAMEWORK = {
@@ -150,3 +151,7 @@ AUTH_USER_MODEL = 'users.User'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+SWAGGER_SETTINGS = {"DEFAULT_AUTO_SCHEMA_CLASS":"materials.views.Decorate_Viewset_Methods"}
+
+STRIPE_API = os.getenv('STRIPE_API')
