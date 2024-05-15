@@ -1,8 +1,6 @@
 import stripe
 from config import settings
 stripe.api_key = settings.STRIPE_API
-
-
 # def create_stripe(payment):
 #     stripe_product = stripe.Product.create(name=payment.course_paid)
 #     stripe_price = stripe.Price.create(
