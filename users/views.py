@@ -52,7 +52,7 @@ class PaymentCreateAPIView(generics.CreateAPIView):
         payment = serializer.save()
         payment.user = self.request.user
         payment.product = create_product(product=payment)
-        payment.price = create_price(price=payment.product)
+        payment.price = create_price(price=payment.payment_amount,product=payment.product)
         payment.session = create_session(session=payment.price)
         payment.save()
         # payment.session_id

@@ -20,12 +20,12 @@ def create_product(product):
     stripe_product = stripe.Product.create(name=product.course_paid)
     return stripe_product
 
-def create_price(price):
+def create_price(price,product):
     stripe_price = stripe.Price.create(
         currency="rub",
-        unit_amount=int(price.payment_amount) * 100,
+        unit_amount=int(price) * 100,
         recurring={"interval": "month"},
-        product_data={"name": price.id},
+        product_data={"name": product.id},
     )
     return stripe_price
 
@@ -36,3 +36,4 @@ def create_session(session):
         mode="payment",
     )
     return stripe_session
+
