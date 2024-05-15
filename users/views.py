@@ -51,9 +51,13 @@ class PaymentCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         payment = serializer.save()
         payment.user = self.request.user
-        payment.product = create_product(product=payment)
+        payment.product = create_product(product=payment.course_paid)
         payment.price = create_price(price=payment.payment_amount,product=payment.product)
-        payment.session = create_session(session=payment.price)
+        payment.session_id,payment.link,payment.status = create_session(session=payment.price)
         payment.save()
-        # payment.session_id
-        # payment.link
+        # print(payment.product)
+        # print(payment.price)
+        # print(payment.session_id)
+        # print(payment.link)
+        # print(payment.status)
+
