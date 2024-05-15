@@ -5,6 +5,8 @@ from django_filters import rest_framework as filters
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated , AllowAny
 from materials.permissions import IsAuth
+from users.services import create_product, create_price, create_session
+
 
 class UserCreateAPIView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
@@ -42,3 +44,16 @@ class PaymentListAPIView(generics.ListAPIView):
     filterset_fields = ('course_paid','subject_paid','payment_method')
     ordering_fields = ('payment_date',)
     permission_classes = [IsAuthenticated]
+
+class PaymentCreateAPIView(generics.CreateAPIView):
+    serializer_class = PaymentSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save()
+        payment.user = self.request.user
+        payment.product = create_product(product=payment.course_paid)
+        payment.price = create_price(price=payment.payment_amount,product=payment.product)
+        payment.session_id,payment.link,payment.status = create_session(session=payment.price)
+        payment.save()
+
+
