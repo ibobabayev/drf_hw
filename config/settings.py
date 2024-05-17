@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'materials',
     'django_filters',
     'drf_yasg',
+    'django_celery_beat',
 ]
 
 REST_FRAMEWORK = {
@@ -155,3 +156,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 SWAGGER_SETTINGS = {"DEFAULT_AUTO_SCHEMA_CLASS":"materials.views.Decorate_Viewset_Methods"}
 
 STRIPE_API = os.getenv('STRIPE_API')
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('PASSWORD')
+EMAIL_PORT = 587

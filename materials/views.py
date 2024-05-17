@@ -10,6 +10,8 @@ from materials.permissions import IsModerator , IsNotModerator
 from django.shortcuts import get_object_or_404
 
 from materials.pagination import CoursePaginator,SubjectPaginator
+from materials.tasks import send_email
+
 
 class Decorate_Viewset_Methods(SwaggerAutoSchema):
     def decorate_viewset_methods(names, decorator):
@@ -30,13 +32,23 @@ class Decorate_Viewset_Methods(SwaggerAutoSchema):
             return cls
 
         return decorate
-@Decorate_Viewset_Methods.decorate_viewset_methods(names="__all__", decorator=swagger_auto_schema(tags=['names']))
-#ЧТО НАДО НАПИСАТЬ В names?
+# @Decorate_Viewset_Methods.decorate_viewset_methods(names="__all__", decorator=swagger_auto_schema(tags=['names']))
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    permission_classes = [IsAuthenticated,IsModerator,IsNotModerator]
+    # permission_classes = [IsAuthenticated,IsModerator,IsNotModerator]
     pagination_class = CoursePaginator
+
+    def put(self, request, *args,**kwargs):
+        course = Course.objects.all()
+        data = request.data
+        course.name = data['name']
+        course.description = data['description']
+        course.subscription_set = data['subscription_set']
+        for c in course:
+            c.save()
+        serializer = CourseSerializer(course)
+        return Response(serializer.data)
 
 
 class SubjectCreateAPIView(generics.CreateAPIView):
