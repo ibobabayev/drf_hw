@@ -19,3 +19,4 @@ urlpatterns = [
 
         path('subscription/create',SubscriptionCreateView.as_view(),name='subscription_create'),
               ] + router.urls
+

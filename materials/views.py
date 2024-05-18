@@ -39,16 +39,12 @@ class CourseViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated,IsModerator,IsNotModerator]
     pagination_class = CoursePaginator
 
-    def put(self, request, *args,**kwargs):
-        course = Course.objects.all()
-        data = request.data
-        course.name = data['name']
-        course.description = data['description']
-        course.subscription_set = data['subscription_set']
-        for c in course:
-            c.save()
-        serializer = CourseSerializer(course)
-        return Response(serializer.data)
+    def update(self, request, pk):
+        course = get_object_or_404(Course,pk=pk)
+        send_email.delay(course_id=course.id)
+        print(f'Курс {course.name} обновлён')
+        return super().update(request)
+
 
 
 class SubjectCreateAPIView(generics.CreateAPIView):
