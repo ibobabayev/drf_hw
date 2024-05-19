@@ -5,8 +5,7 @@ from django.conf import settings
 from materials.models import Subscription, Course
 from users.models import User
 
-import datetime
-
+from datetime import datetime, timezone , timedelta
 
 @shared_task
 def send_email(course_id):
@@ -24,9 +23,10 @@ def send_email(course_id):
 @shared_task
 def check_user():
     active_users = User.objects.filter(is_active=True)
-    now = datetime.datetime.now()
+    now = datetime.now(timezone.utc)
     for user in active_users:
-        if now - user.last_login > datetime.timedelta(days=30):
-            user.is_active = False
-            user.save()
-            print(f"Пользователь {user} заблокирован за пассивность")
+        if user.last_login:
+            if now - user.last_login > timedelta(days=30):
+                user.is_active = False
+                user.save()
+                print(f"Пользователь {user} заблокирован за пассивность")

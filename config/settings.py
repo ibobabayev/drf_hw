@@ -168,7 +168,7 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_BEAT_SCHEDULE = {
     'check_user': {
         'task': 'materials.tasks.check_user',
-        'schedule' : timedelta(days=30)
+        'schedule' : timedelta(minutes=1)
     }
 }
 
