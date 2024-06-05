@@ -4,6 +4,7 @@ services:
   db:
     image: postgres
     environment:
+      POSTGRES_HOST_AUTH_METHOD : trust
       PGDATA : /var/lib/postgresql/data/pgdata
     env_file:
         - .env
@@ -20,7 +21,7 @@ services:
 
   app:
     build: .
-    command: bash -c "python manage.py migrate && python manage.py runserver redis://127.0.0.1:6379/0:8000"
+    command: bash -c "python manage.py migrate && python manage.py runserver redis:8000"
     ports:
       - '8000:8000'
     depends_on:
